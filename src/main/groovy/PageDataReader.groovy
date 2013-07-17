@@ -32,7 +32,11 @@ class PageDataReader {
     PageData readPropertiesAndCreatePageData(File src) {
         // propertiesToReadに指定されたpropertyを
         // srcから読み込んでpropertiesに格納する
-        Map properties
+        Map properties = [:].withDefault{""}
+        def readerConfig = new ConfigSlurper().parse(src.toURL())
+        propertiesToRead.each {
+            properties[it] = readerConfig[it]
+        }
         new PageData(properties, getPageStringClos)
     }
 }

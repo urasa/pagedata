@@ -46,5 +46,18 @@ class PageDataReaderTest {
         assertThat(sut.propertiesToRead, is(['prop1','prop2']))
         assertThat(sut.getPageStringClos.call(), is('clos from configFile'))
     }
+    @Test
+    void 設定ファイルから読んだプロパティのリストを保持するPageDataを作成する() {
+        File pageDataConfigFile = folder.newFile('page.groovy')
+        pageDataConfigFile.withPrintWriter { writer ->
+            writer.println "prop1 = 'property1!'"
+            writer.println "prop2 = 'property2!'"
+        }
+        File configFile = createTempConfigFile()
+        PageData sut = PageDataReader.createReader(configFile) \
+                         .readPropertiesAndCreatePageData(pageDataConfigFile)
+        assertThat sut.properties, is([prop1:'property1!', prop2:'property2!'])
+        assertThat sut.getPageStringClos.call(), is('clos from configFile')
+    }
 }
 
