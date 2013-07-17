@@ -1,0 +1,17 @@
+
+bin/
+
+### Java ########################################
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+### Gradle ######################################
+build/
+.gradle/
+.settings/
+.groovy/
+
