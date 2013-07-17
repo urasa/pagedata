@@ -16,7 +16,6 @@ class PageDataReaderTest {
             writer.println "clos = { -> 'clos from configFile'}"
         }
         PageDataReader sut = PageDataReader.createReader(configFile)
-        
         assertThat(sut.propertiesToRead, is(['prop1','prop2']))
         assertThat(sut.getPageStringClos.call(), is('clos from configFile'))
     }
@@ -39,6 +38,15 @@ class PageDataReaderTest {
         def readerConfig = new ConfigSlurper().parse(configFile.toURL())
         def actual = PageDataReader.readGetPageStringClos readerConfig
         assertThat actual.call(), is('this is a test')
+    }
+    @Test
+    void resourceにおいた設定ファイルから読み取れる() {
+        File configFile = 
+          new File(Thread.currentThread().getContextClassLoader()
+            .getResource('simpleReaderFromResources.groovy').toURI())
+        PageDataReader sut = PageDataReader.createReader(configFile)
+        assertThat(sut.propertiesToRead, is(['prop1','prop2']))
+        assertThat(sut.getPageStringClos.call(), is('clos from configFile'))
     }
 }
 
